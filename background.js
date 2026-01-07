@@ -34,7 +34,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete') {
+  if (changeInfo.status === 'complete' && tab.active) { // Only send on complete for active tab
     sendMessage({type: 'TAB_UPDATED'});
   }
 });
