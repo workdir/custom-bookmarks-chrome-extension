@@ -12,6 +12,8 @@ ul {
 
 li {
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
 }
 
 a {
@@ -21,4 +23,12 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+.green-dot {
+  width: 8px;
+  height: 8px;
+  background-color: green;
+  border-radius: 50%;
+  margin-right: 8px;
 }

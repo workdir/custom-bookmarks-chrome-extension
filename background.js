@@ -23,3 +23,13 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     });
   }
 });
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete') {
+    chrome.runtime.sendMessage({type: 'TAB_UPDATED'});
+  }
+});
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  chrome.runtime.sendMessage({type: 'TAB_UPDATED'});
+});

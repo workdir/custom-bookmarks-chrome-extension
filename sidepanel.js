@@ -1,9 +1,16 @@
 const urlList = document.getElementById('url-list');
 
-function displayUrls(urls) {
+function displayUrls(urls, activeUrl) {
   urlList.innerHTML = '';
   for (const url of urls) {
     const listItem = document.createElement('li');
+
+    if (url === activeUrl) {
+      const dot = document.createElement('span');
+      dot.classList.add('green-dot');
+      listItem.appendChild(dot);
+    }
+
     const link = document.createElement('a');
     link.href = url;
     link.textContent = url;
@@ -13,14 +20,15 @@ function displayUrls(urls) {
   }
 }
 
-function loadUrls() {
+async function loadUrls() {
+  const [activeTab] = await chrome.tabs.query({active: true, currentWindow: true});
   chrome.storage.local.get({urls: []}, (result) => {
-    displayUrls(result.urls);
+    displayUrls(result.urls, activeTab.url);
   });
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'URL_SAVED') {
+  if (message.type === 'URL_SAVED' || message.type === 'TAB_UPDATED') {
     loadUrls();
   }
 });
