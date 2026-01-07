@@ -15,5 +15,9 @@
   },
   "side_panel": {
     "default_path": "sidepanel.html"
-  }
+  },
+  "web_accessible_resources": [{
+    "resources": ["sidepanel.html", "sidepanel.js", "sidepanel.css"],
+    "matches": ["<all_urls>"]
+  }]
 }
