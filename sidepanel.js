@@ -1,7 +1,6 @@
 const urlList = document.getElementById('url-list');
-let savedUrls = [];
 
-async function displayUrls() {
+async function displayUrls(savedUrls) {
   const [activeTab] = await chrome.tabs.query({active: true, currentWindow: true});
   const currentActiveUrl = activeTab ? activeTab.url : null;
 
@@ -10,6 +9,7 @@ async function displayUrls() {
     const listItem = document.createElement('li');
 
     if (url === currentActiveUrl) {
+      console.log(`appending green dot`)
       const dot = document.createElement('span');
       dot.classList.add('green-dot');
       listItem.appendChild(dot);
@@ -27,7 +27,7 @@ async function displayUrls() {
 async function loadAndDisplayUrls() {
   chrome.storage.local.get({urls: []}, (result) => {
     savedUrls = result.urls;
-    displayUrls();
+    displayUrls(savedUrls);
   });
 }
 
@@ -36,7 +36,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     loadAndDisplayUrls();
   } else if (message.type === 'TAB_UPDATED') {
     // When tab updates, just re-display based on current active tab
-    displayUrls();
+    loadAndDisplayUrls();
   }
 });
 
