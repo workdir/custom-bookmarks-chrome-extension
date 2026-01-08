@@ -1,0 +1,3 @@
+- No method to ensure ui is working correctly bofore deployment.
+- No way to test pure logic is is working as expected.
+- lack of tests.

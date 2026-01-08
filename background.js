@@ -10,7 +10,23 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+//function showIndicator(tabId) {
+    //chrome.tabs.get(tabId, tab => {
+        //const currentUrl = normalize(tab.url);
+//
+        //chrome.storage.local.get("savedUrls", ({ savedUrls = [] }) => {
+            //const match = savedUrls.some(u => normalize(u) === currentUrl);
+            //chrome.action.setBadgeText({
+                //tabId,
+                //text: match ? "●" : ""
+            //});
+            //chrome.action.setBadgeBackgroundColor({ tabId, color: "#00FF00" });
+        //});
+    //});
+//}
+
 function sendMessage(message) {
+  console.log({action: message})
   chrome.runtime.sendMessage(message, () => {
     if (chrome.runtime.lastError) {
       // This error is expected when the side panel is closed.

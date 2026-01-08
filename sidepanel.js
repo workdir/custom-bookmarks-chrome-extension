@@ -1,43 +1,45 @@
-const urlList = document.getElementById('url-list');
+import { renderUrlList } from './ui/url-list'
 
-async function displayUrls(savedUrls) {
-  const [activeTab] = await chrome.tabs.query({active: true, currentWindow: true});
-  const currentActiveUrl = activeTab ? activeTab.url : null;
-
-  urlList.innerHTML = '';
-  for (const url of savedUrls) {
-    const listItem = document.createElement('li');
-
-    if (url === currentActiveUrl) {
-      console.log(`appending green dot`)
-      const dot = document.createElement('span');
-      dot.classList.add('green-dot');
-      listItem.appendChild(dot);
-    }
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.textContent = url;
-    link.target = '_blank';
-    listItem.appendChild(link);
-    urlList.appendChild(listItem);
-  }
+// Chrome api
+//
+const getActiveUrl = async () => {
+  const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  return activeTab ? activeTab.url : null;
 }
 
-async function loadAndDisplayUrls() {
-  chrome.storage.local.get({urls: []}, (result) => {
-    savedUrls = result.urls;
-    displayUrls(savedUrls);
-  });
+const getUrls = async () => {
+   return chrome.storage.local.get({urls: []}); 
+}
+
+async function displayUrls() {
+    const urls = await getUrls()
+    const activeUrl = await getActiveUrl()
+
+    renderUrlList(urls, activeUrl) 
+}
+
+
+// Register Events
+//
+
+const onEvent = (eventType) => {
+  switch (eventType) {
+    case "URL_SAVED":
+    case "URL_UPDATED":
+      displayUrls()
+      break;
+    default:
+      throw new Error(`behaviour not defined for this "${message.type}" event`)
+  }
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'URL_SAVED') {
-    loadAndDisplayUrls();
-  } else if (message.type === 'TAB_UPDATED') {
-    // When tab updates, just re-display based on current active tab
-    loadAndDisplayUrls();
-  }
+  onEvent(message.type)
 });
 
-loadAndDisplayUrls();
+const initialScriptLoad = () => {
+  displayUrls()
+}
+
+initialScriptLoad()
+
