@@ -25,7 +25,7 @@ async function displayUrls() {
 const onEvent = (eventType) => {
   switch (eventType) {
     case "URL_SAVED":
-    case "URL_UPDATED":
+    case "TAB_UPDATED":
       displayUrls()
       break;
     default:
