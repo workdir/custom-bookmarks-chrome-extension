@@ -8,7 +8,7 @@ const getActiveUrl = async () => {
 }
 
 const getUrls = async () => {
-   return chrome.storage.local.get({urls: []}); 
+   return chrome.storage.local.get({urls: []}).then(r => r.urls); 
 }
 
 async function displayUrls() {
