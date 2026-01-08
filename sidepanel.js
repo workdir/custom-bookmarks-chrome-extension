@@ -1,4 +1,4 @@
-import { renderUrlList } from './ui/url-list'
+import { renderUrlList } from './ui/url-list.js'
 
 // Chrome api
 //

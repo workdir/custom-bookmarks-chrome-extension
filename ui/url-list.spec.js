@@ -1,4 +1,4 @@
-import { renderUrlList } from './url-list'
+import { renderUrlList } from './url-list.js'
 import { it, beforeEach, afterEach, vi, expect } from 'vitest'
 import { screen } from '@testing-library/dom'
 
