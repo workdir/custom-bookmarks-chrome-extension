@@ -1,23 +1,20 @@
 import { renderUrlList } from './ui/url-list.js'
+import { Urls } from './urls.js'
 
 // Chrome api
 //
+
 const getActiveUrl = async () => {
   const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return activeTab ? activeTab.url : null;
 }
 
-const getUrls = async () => {
-   return chrome.storage.local.get({urls: []}).then(r => r.urls); 
-}
-
 async function displayUrls() {
-    const urls = await getUrls()
+    const urls = await Urls.getAll()
     const activeUrl = await getActiveUrl()
 
     renderUrlList(urls, activeUrl) 
 }
-
 
 // Register Events
 //
